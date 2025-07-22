@@ -129,7 +129,7 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="../examples/widgets.html">
+                    <a class="nav-link" href="{{route('rh.index')}}">
                         <i class="material-icons">widgets</i>
                         <p> Listes des Offres </p>
                     </a>
@@ -225,9 +225,10 @@
         <!-- End Navbar -->
         <div class="content">
 
-            <h1>helllo</h1>
 
-        </div>
+                                     @yield('content')
+                          </div>
+
         <footer class="footer">
             <div class="container-fluid">
                 <nav class="float-left">
@@ -594,6 +595,8 @@
 
     });
 </script>
+@yield('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
