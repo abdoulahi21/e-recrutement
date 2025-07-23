@@ -47,14 +47,14 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="form-check ml-3">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="">
-                                        Publier
-                                        <span class="form-check-sign">
-                    <span class="check"></span>
-                  </span>
-                                    </label>
+                                <div class="form-group col-md-6">
+                                    <label for="examplePass" class="bmd-label-floating">Status</label>
+                                        <select type="text" name="status" class="form-control" id="inputType" required>
+                                            <option></option>
+                                            <option value="active">Active</option>
+                                            <option value="inactive">Inactive</option>
+                                        </select>
+
                                 </div>
                             </div>
                             <div class="card-footer ">

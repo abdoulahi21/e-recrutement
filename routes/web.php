@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Recru\ApplyController;
 use App\Http\Controllers\Recru\OfferController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,6 +23,7 @@ Route::get('/',
     [\App\Http\Controllers\OfferController::class, 'jobs']
 )->name('jobs');
 
+
 Route::get('/jobs/{offer}',
     [\App\Http\Controllers\OfferController::class, 'show']
 )->name('jobs-detail');
@@ -28,6 +31,22 @@ Route::get('/jobs/{offer}',
 //Route::get('/dashboard', function () {
 //    return view('dashboard');
 //})->middleware(['auth', 'verified'])->name('dashboard');
+
+
+//Route::get('/dashboard', function () {
+//    return view('dashboard');
+//})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/rh/dashboard', function () {
+        return view('rh.dashboard');
+    })->name('rh.dashboard');
+
+    Route::get('/candidat/applications', function () {
+        return view('candidat.applications');
+    })->name('candidat.applications');
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -44,7 +63,6 @@ Route::middleware('auth')->group(function () {
     )->name('candidat.dashboard');
 
 });
-
 Route::resources([
     'rh' => OfferController::class,
     'offer' => ApplyController::class,
