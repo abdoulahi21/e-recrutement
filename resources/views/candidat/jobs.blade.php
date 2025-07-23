@@ -101,11 +101,7 @@
                         <div class="card hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                             <div class="card-body">
                                 <!-- badge si offre est deja postuler -->
-                                @if($offer->apply->contains('user_id', auth()->id()))
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-500 text-white">
-                                        Déjà postulé
-                                    </span>
-                                @endif
+
                                 <!-- En-tête de la carte -->
                                 <div class="flex items-start justify-between mb-4">
                                     <div class="flex-1">
