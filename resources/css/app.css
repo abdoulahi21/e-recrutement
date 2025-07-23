@@ -1,3 +1,74 @@
+/* Ajoutez ces styles dans votre fichier app.css après les directives Tailwind */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom styles pour le thème vert et orange */
+@layer utilities {
+    .gradient-green-orange {
+        background: linear-gradient(135deg, #10b981, #f97316);
+    }
+
+    .gradient-green-orange-light {
+        background: linear-gradient(135deg, #34d399, #fb923c);
+    }
+
+    .shadow-green {
+        box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.15);
+    }
+
+    .shadow-orange {
+        box-shadow: 0 4px 14px 0 rgba(249, 115, 22, 0.15);
+    }
+
+    .border-gradient {
+        border-image: linear-gradient(135deg, #10b981, #f97316) 1;
+    }
+}
+
+@layer components {
+    .nav-link-active {
+        @apply border-green-500 text-green-700;
+    }
+
+    .nav-link-inactive {
+        @apply border-transparent text-gray-500 hover:text-green-600 hover:border-green-300;
+    }
+
+    .btn-primary {
+        @apply bg-gradient-to-r from-green-500 to-orange-500 text-white px-6 py-2 rounded-lg font-medium hover:from-green-600 hover:to-orange-600 transition-all duration-200 shadow-md hover:shadow-lg;
+    }
+
+    .btn-secondary {
+        @apply bg-white border border-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200;
+    }
+
+    .card {
+        @apply bg-white shadow-sm rounded-2xl border border-gray-200 overflow-hidden;
+    }
+
+    .card-header {
+        @apply p-6 border-b border-gray-200;
+    }
+
+    .card-body {
+        @apply p-6;
+    }
+
+    .stat-card {
+        @apply bg-white shadow-sm rounded-2xl border border-gray-200 p-6;
+    }
+
+    .progress-ring {
+        @apply transform -rotate-90;
+    }
+
+    .form-input {
+        @apply block w-full px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-[0.5px] focus:ring-green-500 focus:border-green-500 transition-colors duration-200;
+    }
+
+    .form-label {
+        @apply block text-sm font-medium text-gray-700 mb-2;
+    }
+}

@@ -12,23 +12,27 @@
         <!-- Nom -->
         <div>
             <x-input-label for="last_name" :value="__('Nom')" />
-            <x-text-input id="last_name" class="block mt-1 w-full" type="text"
-                          name="last_name" :value="old('last_name')" required autofocus autocomplete="last_name" />
+            <x-text-input id="last_name" class="block mt-1 w-full form-input" type="text"
+                          name="last_name" :value="old('last_name')"
+                          required autofocus autocomplete="last_name" />
             <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full form-input"
+                          type="email" name="email" :value="old('email')"
+                          required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Numero Telephone -->
         <div>
             <x-input-label for="number_phone" :value="__('Numero Telephone')" />
-            <x-text-input id="number_phone" class="block mt-1 w-full" type="text"
-                          name="number_phone" :value="old('number_phone')" required autofocus autocomplete="number_phone" />
+            <x-text-input id="number_phone" class="block mt-1 w-full form-input" type="text"
+                          name="number_phone" :value="old('number_phone')"
+                          required autofocus autocomplete="number_phone" />
             <x-input-error :messages="$errors->get('number_phone')" class="mt-2" />
         </div>
 

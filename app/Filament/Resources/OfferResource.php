@@ -41,17 +41,20 @@ class OfferResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('type')
                     ->options([
+                        'cdi' => 'CDI',
+                        'cdd' => 'CDD',
                         'stage' => 'Stage',
-                        'emploi' => 'Emploi',
                         'alternance' => 'Alternance',
                         'freelance' => 'Freelance',
+                        'benevolat' => 'Benevolat',
+                        'apprentissage' => 'Apprentissage',
                     ])
                     ->default('stage')
                     ->required(),
                 Forms\Components\Select::make('status')
                     ->options([
-                        'ouvert' => 'Ouvert',
-                        'fermer' => 'Fermer',
+                        'active' => 'Active',
+                        'inactive' => 'Inactive',
                     ])
                     ->default('ouvert')
                     ->required(),
@@ -77,8 +80,10 @@ class OfferResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->limit(25)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
+                    ->limit(40)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('end_date')
                     ->date()
@@ -88,7 +93,7 @@ class OfferResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user.compagny_name')
-                    ->label('Recruiter Compagny')
+                    ->label('Compagny')
                     ->sortable()
                     ->searchable(),
 
