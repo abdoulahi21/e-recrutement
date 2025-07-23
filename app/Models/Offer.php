@@ -18,6 +18,7 @@ class Offer extends Model
     public function candidates(){
         return $this->belongsToMany(User::class,'apply')->withTimestamps();
     }
+
     public function apply()
     {
         return $this->hasMany(Apply::class);
