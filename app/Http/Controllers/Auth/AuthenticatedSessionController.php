@@ -9,9 +9,32 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-
 class AuthenticatedSessionController extends Controller
 {
+
+
+
+    protected function redirectTo()
+    {
+        $user = auth()->user();
+
+        switch ($user->role) {
+            case 'admin':
+                return route('admin.dashboard');
+            case 'recruiter':
+                return route('rh.dashboard');
+            case 'user':
+                return route('candidat.dashboard');
+            default:
+                return route('home');
+        }
+    }
+
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
     /**
      * Display the login view.
      */
@@ -19,6 +42,7 @@ class AuthenticatedSessionController extends Controller
     {
         return view('auth.login');
     }
+
 
     /**
      * Handle an incoming authentication request.
