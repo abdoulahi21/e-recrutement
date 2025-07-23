@@ -216,7 +216,7 @@
                                 <a class="dropdown-item" href="#">Settings</a>
                                 <div class="dropdown-divider"></div>
 
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form method="post" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="dropdown-item">Se déconnecter</button>
                                 </form>

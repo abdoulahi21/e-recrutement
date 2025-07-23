@@ -26,7 +26,7 @@ class AuthenticatedSessionController extends Controller
             case 'user':
                 return route('candidat.dashboard');
             default:
-                return route('home');
+                return route('/');
         }
     }
 
@@ -67,6 +67,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 }
