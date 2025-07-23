@@ -14,26 +14,6 @@ class AuthenticatedSessionController extends Controller
 
 
 
-    protected function redirectTo()
-    {
-        $user = auth()->user();
-
-        switch ($user->role) {
-            case 'admin':
-                return route('admin.dashboard');
-            case 'recruiter':
-                return route('rh.dashboard');
-            case 'user':
-                return route('candidat.dashboard');
-            default:
-                return route('/');
-        }
-    }
-
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
 
     /**
      * Display the login view.
@@ -47,14 +27,41 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+//    public function store(LoginRequest $request): RedirectResponse
+//    {
+//        $request->authenticate();
+//
+//        $request->session()->regenerate();
+//
+//        return redirect()->intended(RouteServiceProvider::HOME);
+//    }
+    public function store(Request $request): RedirectResponse
     {
-        $request->authenticate();
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            return back()->withErrors([
+                'email' => 'Les identifiants sont incorrects.',
+            ]);
+        }
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // Redirection selon le rôle
+        $user = Auth::user();
+        if ($user->role_id === 2) {
+            return redirect()->route('rh.dashboard');
+        } elseif ($user->role_id === 3) {
+            return redirect()->route('candidat.applications');
+        }
+
+        // Redirection par défaut
+        return redirect()->route('candidat.jobs');
     }
+
 
     /**
      * Destroy an authenticated session.
@@ -67,6 +74,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect('/');
     }
 }

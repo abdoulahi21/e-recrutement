@@ -44,6 +44,7 @@ class OfferController extends Controller
             'description' => 'required|string',
             'end_date' => 'required|date|after_or_equal:today',
             'type' => 'required|string|max:50',
+            'status' => 'required|string|max:50',
         ]);
         $offer = new Offer();
         $offer->title=$request->input('title');
@@ -51,7 +52,7 @@ class OfferController extends Controller
         $offer->end_date=$request->input('end_date');
         $offer->type=$request->input('type');
         $offer->user_id=Auth::id();
-        $offer->status="publier";
+        $offer->status=$request->input('status');
         $offer->save();
         return redirect()->route('rh.index')->with('success', 'Offre ajouter avec succès !');
     }
