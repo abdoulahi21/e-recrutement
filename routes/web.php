@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Recru\ApplyController;
 use App\Http\Controllers\Recru\OfferController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('layouts.admin.template');
+    return view('rh.dashboard');
 });
 
 Route::get('/dashboard', function () {
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
 
 Route::resources([
     'rh' => OfferController::class,
+    'offer' => ApplyController::class,
 ]);
+Route::get('/dashboard',[OfferController::class,'home'])->name('rh.dashboard');
 
 require __DIR__.'/auth.php';

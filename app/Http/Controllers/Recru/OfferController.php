@@ -14,13 +14,16 @@ class OfferController extends Controller
      */
     public function index()
     {
-        //
+
         $offers = Offer::with('user')
             ->where('user_id', Auth::id())
             ->get();
+
         return view('rh.index', compact('offers'));
     }
-
+    public function home(){
+        return view('rh.dashboard');
+    }
     /**
      * Show the form for creating a new resource.
      */

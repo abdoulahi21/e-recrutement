@@ -93,7 +93,7 @@
                 <div class="user-info">
                     <a data-toggle="collapse" href="#collapseExample" class="username">
               <span>
-                Tania Andrew
+                {{ Auth::user()->name }}
                 <b class="caret"></b>
               </span>
                     </a>
@@ -123,7 +123,7 @@
             </div>
             <ul class="nav">
                 <li class="nav-item active ">
-                    <a class="nav-link" href="../examples/dashboard.html">
+                    <a class="nav-link" href="{{route('rh.dashboard')}}">
                         <i class="material-icons">dashboard</i>
                         <p> Dashboard </p>
                     </a>
@@ -135,7 +135,7 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="../examples/charts.html">
+                    <a class="nav-link" href="{{route('offer.index')}}">
                         <i class="material-icons">timeline</i>
                         <p> Offres Postuler </p>
                     </a>
@@ -215,7 +215,12 @@
                                 <a class="dropdown-item" href="#">Profile</a>
                                 <a class="dropdown-item" href="#">Settings</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Log out</a>
+
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Se déconnecter</button>
+                                </form>
+
                             </div>
                         </li>
                     </ul>

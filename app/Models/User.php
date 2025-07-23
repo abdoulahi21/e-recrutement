@@ -61,7 +61,7 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Offer::class);
     }
     public function apply(){
-        return $this->hasMany(Apply::class);
+        return $this->belongsToMany(Offer::class,'apply')->withTimestamps();
     }
 
     public function getNameAttribute(): string

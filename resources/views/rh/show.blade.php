@@ -36,8 +36,8 @@
                             </span>
                             </div>
                             <div class="col-md-6">
-                                <strong>Créée par (ID utilisateur) :</strong><br>
-                                {{ $offer->user_id }}
+                                <strong>Créée par:</strong><br>
+                                {{ $offer->user->last_name }} {{ $offer->user->first_name }}
                             </div>
                         </div>
 
