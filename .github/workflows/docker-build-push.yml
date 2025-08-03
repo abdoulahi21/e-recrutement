@@ -48,7 +48,9 @@ jobs:
           path: .
 
       - name: Load Docker Image
-        run: docker load -i image.tar
+        run: |
+          docker load -i image.tar
+          docker tag ${{ secrets.DOCKER_USERNAME }}/ci-cd-mai:latest ${{ secrets.DOCKER_USERNAME }}/ci-cd-mai:v1.0
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
