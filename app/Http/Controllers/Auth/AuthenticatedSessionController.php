@@ -52,14 +52,14 @@ class AuthenticatedSessionController extends Controller
 
         // Redirection selon le rôle
         $user = Auth::user();
-        if ($user->role_id === 2) {
+        if ($user->role_id === 1) {
+            return redirect('/admin');
+        } elseif ($user->role_id === 2) {
             return redirect()->route('rh.dashboard');
-        } elseif ($user->role_id === 3) {
-            return redirect()->route('candidat.applications');
         }
 
         // Redirection par défaut
-        return redirect()->route('candidat.jobs');
+        return redirect()->route('candidat.dashboard');
     }
 
 

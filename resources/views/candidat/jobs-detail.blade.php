@@ -90,74 +90,89 @@
                 <div class="lg:col-span-1">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Candidater à cette offre</h3>
-
-                            @if($offer->status !== 'active')
-                                <div class="text-center py-4">
-                                    <div class="text-red-600 mb-2">
-                                        <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                                        </svg>
-                                    </div>
-                                    <p class="text-sm text-red-600 font-medium">Cette offre n'est plus disponible</p>
-                                </div>
-                            @elseif(\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($offer->end_date)))
-                                <div class="text-center py-4">
-                                    <div class="text-red-600 mb-2">
-                                        <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                    </div>
-                                    <p class="text-sm text-red-600 font-medium">Cette offre a expiré</p>
+                            @if(Auth::check() && Auth::user()->role_id == 2 && Auth::user()->id === $offer->user_id)
+                                <div class="flex justify-center items-center space-x-4 w-full">
+                                <x-primary-button>
+                                    <a href="{{ route('rh.offers.edit', $offer) }}">
+                                        Modifier l'offre
+                                    </a>
+                                </x-primary-button>
+                                <x-danger-button >
+                                    <a href="{{ route('rh.offers.destroy', $offer) }}">
+                                        Supprimer l'offre
+                                    </a>
+                                </x-danger-button>
                                 </div>
                             @else
-                                @auth
-                                    @php
-                                        $hasApplied = $offer->apply()->where('user_id', auth()->id())->exists();
-                                    @endphp
-
-                                    @if($hasApplied)
-                                        <div class="text-center py-4">
-                                            <div class="text-green-600 mb-2">
-                                                <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
-                                            </div>
-                                            <p class="text-sm text-green-600 font-medium">Vous avez déjà postulé à cette offre</p>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Candidater à cette offre</h3>
+                                @if($offer->status !== 'active')
+                                    <div class="text-center py-4">
+                                        <div class="text-red-600 mb-2">
+                                            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                            </svg>
                                         </div>
-                                    @else
-                                        <button
-                                            x-data=""
-                                            @click="$dispatch('open-modal', 'apply-modal')"
-                                            class="w-full btn-primary flex items-center justify-center"
-                                        >
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                            </svg>
-                                            Postuler
-                                        </button>
-                                    @endif
-                                @else
-                                    <div class="space-y-4">
-                                        <p class="text-sm text-gray-600 text-center">Vous devez être connecté pour postuler</p>
-                                        <a href="{{ route('login') }}" class="w-full btn-primary flex items-center justify-center">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                                            </svg>
-                                            Se connecter
-                                        </a>
-                                        <div class="text-center">
-                                            <span class="text-sm text-gray-500">ou</span>
-                                        </div>
-                                        <a href="{{ route('register') }}" class="w-full btn-secondary flex items-center justify-center">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                                            </svg>
-                                            Créer un compte
-                                        </a>
+                                        <p class="text-sm text-red-600 font-medium">Cette offre n'est plus disponible</p>
                                     </div>
-                                @endauth
+                                @elseif(\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($offer->end_date)))
+                                    <div class="text-center py-4">
+                                        <div class="text-red-600 mb-2">
+                                            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                        <p class="text-sm text-red-600 font-medium">Cette offre a expiré</p>
+                                    </div>
+                                @else
+                                    @auth
+                                        @php
+                                            $hasApplied = $offer->apply()->where('user_id', auth()->id())->exists();
+                                        @endphp
+
+                                        @if($hasApplied)
+                                            <div class="text-center py-4">
+                                                <div class="text-green-600 mb-2">
+                                                    <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                </div>
+                                                <p class="text-sm text-green-600 font-medium">Vous avez déjà postulé à cette offre</p>
+                                            </div>
+                                        @else
+                                            <button
+                                                x-data=""
+                                                @click="$dispatch('open-modal', 'apply-modal')"
+                                                class="w-full btn-primary flex items-center justify-center"
+                                            >
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                </svg>
+                                                Postuler
+                                            </button>
+                                        @endif
+                                    @else
+                                        <div class="space-y-4">
+                                            <p class="text-sm text-gray-600 text-center">Vous devez être connecté pour postuler</p>
+                                            <a href="{{ route('login') }}" class="w-full btn-primary flex items-center justify-center">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                                                </svg>
+                                                Se connecter
+                                            </a>
+                                            <div class="text-center">
+                                                <span class="text-sm text-gray-500">ou</span>
+                                            </div>
+                                            <a href="{{ route('register') }}" class="w-full btn-secondary flex items-center justify-center">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                                                </svg>
+                                                Créer un compte
+                                            </a>
+                                        </div>
+                                    @endauth
+                                @endif
                             @endif
+
 
                             <!-- Statistiques -->
                             <div class="mt-6 pt-6 border-t">
@@ -177,8 +192,8 @@
                                 @auth
                                     @if(auth()->id() === $offer->user_id && $offer->apply()->count() > 0)
                                         <div class="mt-4">
-                                            <a href="#"
-{{--                                                href="{{ route('offers.applications', $offer) }}"--}}
+                                            <a
+                                                href="{{ route('rh.offers.applications', $offer) }}"
                                                class="w-full btn-secondary flex items-center justify-center">
                                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>

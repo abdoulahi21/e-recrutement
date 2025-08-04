@@ -2,14 +2,37 @@
     // Configuration des liens de navigation
     $navLinks = [
         [
+            'name' => 'Tableau de bord',
+            'route' => 'candidat.dashboard',
+            'active' => request()->routeIs('candidat.dashboard')
+        ],
+        [
             'name' => 'Offres d\'emploi',
             'route' => 'jobs',
             'active' => request()->routeIs('jobs') || request()->routeIs('jobs-detail')
         ],
+    ];
+
+    $navLinksRh = [
         [
             'name' => 'Tableau de bord',
-            'route' => 'candidat.dashboard',
-            'active' => request()->routeIs('candidat.dashboard')
+            'route' => 'rh.dashboard',
+            'active' => request()->routeIs('rh.dashboard')
+        ],
+        [
+            'name' => 'Mes offres d\'emploi',
+            'route' => 'rh.offers.index',
+            'active' => request()->routeIs('rh.offers.*')
+        ],
+        [
+            'name' => 'Candidatures reçues',
+            'route' => 'rh.applications.index',
+            'active' => request()->routeIs('rh.applications.*')
+        ],
+        [
+            'name' => 'Statistiques',
+            'route' => 'rh.stats',
+            'active' => request()->routeIs('rh.stats')
         ],
     ];
 
@@ -48,16 +71,29 @@
                 <!-- Navigation Links (Desktop) -->
                 @auth
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        @foreach($navLinks as $link)
-                            <x-nav-link
-                                :href="Route::has($link['route']) ? route($link['route']) : '#'"
-                                :active="$link['active']"
-                                class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium
-                                leading-5 transition duration-150 ease-in-out focus:outline-none
-                                {{ $link['active'] ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 focus:text-green-700 focus:border-green-300' }}">
-                                {{ __($link['name']) }}
-                            </x-nav-link>
-                        @endforeach
+                        @if(Auth::user()->role_id == 2)
+                            @foreach($navLinksRh as $link)
+                                <x-nav-link
+                                    :href="Route::has($link['route']) ? route($link['route']) : '#'"
+                                    :active="$link['active']"
+                                    class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium
+                                    leading-5 transition duration-150 ease-in-out focus:outline-none
+                                    {{ $link['active'] ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 focus:text-green-700 focus:border-green-300' }}">
+                                    {{ __($link['name']) }}
+                                </x-nav-link>
+                            @endforeach
+                        @else
+                            @foreach($navLinks as $link)
+                                <x-nav-link
+                                    :href="Route::has($link['route']) ? route($link['route']) : '#'"
+                                    :active="$link['active']"
+                                    class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium
+                                    leading-5 transition duration-150 ease-in-out focus:outline-none
+                                    {{ $link['active'] ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 focus:text-green-700 focus:border-green-300' }}">
+                                    {{ __($link['name']) }}
+                                </x-nav-link>
+                            @endforeach
+                        @endif
                     </div>
                 @endauth
             </div>

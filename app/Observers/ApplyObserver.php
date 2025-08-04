@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Apply;
+use App\Notifications\SendApplyUpdateNotification;
 use App\Notifications\SendAppyNotification;
 use Illuminate\Support\Facades\Notification;
 
@@ -26,6 +27,9 @@ class ApplyObserver
 
     public function updated(Apply $apply): void
     {
+        dispatch(function () use ($apply) {
+            $apply->user->notify(new SendApplyUpdateNotification($apply));
+        });
     }
 
     public function saving(Apply $apply): void
@@ -34,6 +38,9 @@ class ApplyObserver
 
     public function saved(Apply $apply): void
     {
+        dispatch(function () use ($apply) {
+            $apply->user->notify(new SendApplyUpdateNotification($apply));
+        });
     }
 
     public function deleting(Apply $apply): void

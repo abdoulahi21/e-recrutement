@@ -1,72 +1,51 @@
-@extends('layouts.admin.template')
-@section('content')
-    <div class="container-fluid">
-        <a class="btn" href="{{route('rh.index')}}">
-                      <span class="btn-label">
-                        <i class="material-icons">keyboard_arrow_left</i>
-                      </span>
-            Retour
-        </a>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card ">
-                    <div class="card-header card-header-rose card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">mail_outline</i>
-                        </div>
-                        <h4 class="card-title">Formulaire</h4>
-                    </div>
-                    <div class="card-body ">
-                        <form method="post" action="{{route('rh.store')}}" >
-                            @csrf
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="inputName" class="bmd-label-floating">Title *</label>
-                                    <input type="text" name="title" class="form-control" id="inputName" required>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="inputType" class="bmd-label-floating">Type *</label>
-                                    <select type="text" name="type" class="form-control" id="inputType" required>
-                                        <option></option>
-                                        <option value="stage">Stage</option>
-                                        <option value="emploi">Emploi</option>
-                                        <option value="alternance">Alternance</option>
-                                    </select>
-                                </div>
-                            </div>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Créer une offre') }}
+        </h2>
+    </x-slot>
 
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="exampleEmail" class="bmd-label-floating">Description *</label>
-                                    <input type="text" class="form-control" name="description" id="exampleEmail" required>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="examplePass" class="bmd-label-floating"></label>
-                                    <input type="date" name="end_date" class="form-control datepicker" value="10/06/2018">
-                                </div>
-                            </div>
+    <div class="py-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <form action="{{ route('rh.offers.store') }}" method="POST">
+                    @csrf
 
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="examplePass" class="bmd-label-floating">Status</label>
-                                        <select type="text" name="status" class="form-control" id="inputType" required>
-                                            <option></option>
-                                            <option value="active">Active</option>
-                                            <option value="inactive">Inactive</option>
-                                        </select>
-
-                                </div>
-                            </div>
-                            <div class="card-footer ">
-                                <button type="submit" class="btn btn-fill btn-rose" >Valider</button>
-                            </div>
-
-                        </form>
+                    <!-- Titre -->
+                    <div class="mb-4">
+                        <x-input-label for="title" :value="__('Titre de l\'offre')" />
+                        <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')" required autofocus />
+                        <x-input-error :messages="$errors->get('title')" class="mt-2" />
                     </div>
 
-                </div>
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <x-input-label for="description" :value="__('Description')" />
+                        <textarea name="description" id="description" rows="6" class="block mt-1 w-full rounded border-gray-300">{{ old('description') }}</textarea>
+                        <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                    </div>
+
+                    <!-- Date de fin -->
+                    <div class="mb-4">
+                        <x-input-label for="end_date" :value="__('Date de fin')" />
+                        <x-text-input id="end_date" class="block mt-1 w-full" type="date" name="end_date" :value="old('end_date')" required />
+                        <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
+                    </div>
+
+                    <!-- Type -->
+                    <div class="mb-4">
+                        <x-input-label for="type" :value="__('Type d\'offre')" />
+                        <select name="type" id="type" class="block mt-1 w-full rounded border-gray-300">
+                            <option value="stage">Stage</option>
+                            <option value="emploi">Emploi</option>
+                            <option value="freelance">Freelance</option>
+                        </select>
+                        <x-input-error :messages="$errors->get('type')" class="mt-2" />
+                    </div>
+
+                    <x-primary-button>{{ __('Créer l\'offre') }}</x-primary-button>
+                </form>
             </div>
         </div>
     </div>
-
-@endsection
+</x-app-layout>

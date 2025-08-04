@@ -28,7 +28,48 @@
             </div>
         </header>
     @endif
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full mt-6">
+{{--    @if(session('success'))--}}
+{{--        <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 w-full rounded-lg">--}}
+{{--            {{ session('success') }}--}}
+{{--        </div>--}}
+{{--    @endif--}}
+{{--    @if(session('error'))--}}
+{{--        <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">--}}
+{{--            {{ session('error') }}--}}
+{{--        </div>--}}
+{{--    @endif--}}
+        @if(session('success'))
+            <div id="success-alert" class="mb-6 bg-green-50 border border-green-200
+            text-green-700 px-4 py-3 w-full rounded-lg flex items-center justify-between">
+                {{ session('success') }}
+                <button onclick="document.getElementById('success-alert').style.display='none'"
+                        class="text-green-700 hover:text-green-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x">
+                        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                    </svg>
+                </button>
+            </div>
+        @endif
 
+        @if(session('error'))
+            <div id="error-alert" class="mb-6 bg-red-50 border border-red-200
+            text-red-700 px-4 py-3 w-full rounded-lg flex items-center justify-between">
+                {{ session('error') }}
+                <button onclick="document.getElementById('error-alert').style.display='none'"
+                        class="text-red-700 hover:text-red-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x">
+                        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                    </svg>
+                </button>
+            </div>
+        @endif
+
+    </div>
     <!-- Page Content -->
     <main class="flex-1">
         {{ $slot }}

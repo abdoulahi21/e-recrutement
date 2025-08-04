@@ -2,14 +2,30 @@
     <x-slot name="header">
         <div class="flex items-center justify-between w-full">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">Offres d'emploi</h1>
-                <p class="mt-2 text-gray-600">Découvrez les opportunités qui correspondent à votre profil</p>
+                @if(Auth::user() && Auth::user()->role_id == 2)
+                    <h1 class="text-2xl font-bold mb-4">Mes Offres</h1>
+                @else
+                    <h1 class="text-3xl font-bold text-gray-900">Offres d'emploi</h1>
+                    <p class="mt-2 text-gray-600">Découvrez les opportunités qui correspondent à votre profil</p>
+                @endif
             </div>
-            <div class="flex items-center space-x-2 text-sm text-gray-500">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M8 6v10a2 2 0 002 2h4a2 2 0 002-2V6"></path>
-                </svg>
-                <span>{{ $offers->total() }} offre{{ $offers->total() > 1 ? 's' : '' }} disponible{{ $offers->total() > 1 ? 's' : '' }}</span>
+            <div class="flex items-center space-x-2 text-sm ">
+                <div class="flex items-center space-x-2 text-sm text-gray-500">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M8 6v10a2 2 0 002 2h4a2 2 0 002-2V6"></path>
+                    </svg>
+                    <span>{{ $offers->total() }} offre{{ $offers->total() > 1 ? 's' : '' }} disponible{{ $offers->total() > 1 ? 's' : '' }}</span>
+                </div>
+                @if(Auth::user() && Auth::user()->role_id == 2)
+                    <div class="flex space-x-4">
+                        <a href="{{ route('rh.offers.create') }}" class="btn-primary inline-flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Nouvelle offre
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </x-slot>
@@ -156,9 +172,15 @@
 
                                 <!-- Boutons d'action -->
                                 <div class="flex space-x-2">
+                                    @if(Auth::user() && Auth::user()->role_id == 2)
+                                        <a href="{{route("rh.offers.show", $offer)}}" class="btn-primary flex-1 text-sm py-2">
+                                            Voir les details l'offre
+                                        </a>
+                                    @else
                                     <a href="{{route("jobs-detail", $offer)}}" class="btn-primary flex-1 text-sm py-2">
                                         Voir les details l'offre
                                     </a>
+                                    @endif
                                     <button class="btn-secondary px-3 py-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>

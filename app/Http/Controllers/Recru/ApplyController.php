@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Recru;
 
 use App\Http\Controllers\Controller;
+use App\Models\Apply;
 use App\Models\Offer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,60 +15,56 @@ class ApplyController extends Controller
      */
     public function index()
     {
-        //
-//        $user = Auth::user();
-//
-//        // Toutes les offres que j’ai créées
-//        $offers = $user->offers()->with('candidates')->get();
-        $offers = Offer::all();
-        return view('offer.index', compact('offers'));
+        $user = Auth::user();
+
+        $offers = Offer::where('user_id', $user->id)->get();
+
+        $query = Apply::with(['user', 'offer'])
+            ->whereIn('offer_id', $offers->pluck('id'));
+
+        if (request()->filled('offer_id')) {
+            $query->where('offer_id', request('offer_id'));
+        }
+
+        if (request()->filled('status')) {
+            $query->where('status', request('status'));
+        }
+
+        $applications = $query->latest()->get();
+
+        return view('rh.applications.index', compact('applications', 'offers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function show(Apply $apply)
     {
-        //
+        $apply->load(['user', 'offer']);
+        return view('rh.applications.show', compact('apply'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function update(Request $request, Apply $apply)
     {
-        //
+        $request->validate([
+            'status' => 'required|in:pending,accepted,rejected',
+        ]);
+
+        $apply->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->back()->with('success', 'Statut mis à jour.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function updateStatus(Request $request, Apply $apply)
     {
-        //
+        $request->validate([
+            'status' => 'required|in:pending,accepted,rejected', // adapte selon tes statuts
+        ]);
+
+        $apply->status = $request->status;
+        $apply->save();
+
+        return redirect()->back()->with('success', 'Statut mis à jour avec succès.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
